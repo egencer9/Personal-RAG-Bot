@@ -1,17 +1,18 @@
-# Scholar-AI
+# ASSISTANT-AI
 
 A fully local, private Retrieval-Augmented Generation (RAG) system for document analysis.
 
 ## Overview
 
-Scholar-AI is a modular, object-oriented Python application that allows you to chat with your academic and technical documents locally. By leveraging LangChain, Ollama, and ChromaDB, the system ensures 100% privacy with no external API calls for inference or tokenization.
+ASSISTANT-AI is a modular, object-oriented Python application that allows you to chat with your academic and technical documents locally. By leveraging LangChain, Ollama, and ChromaDB, the system ensures 100% privacy with no external API calls for inference or tokenization.
 
-It currently features a functional CLI and is in the process of transitioning to a Streamlit-based user interface.
+It features a modern Streamlit-based user interface for easy document ingestion and conversational querying.
 
 ## Tech Stack
 
 - **Language:** Python 3.10+
 - **Orchestration:** LangChain
+- **UI Framework:** Streamlit
 - **LLM Provider:** Ollama (Running Llama 3 locally)
 - **Vector Store:** ChromaDB (Persistent local storage)
 - **Embeddings:** HuggingFace (`sentence-transformers/all-MiniLM-L6-v2`)
@@ -22,14 +23,15 @@ It currently features a functional CLI and is in the process of transitioning to
 The project follows a modular Object-Oriented Programming pattern with a singleton architecture for database and LLM services to prevent memory leaks during operation.
 
 ### Workflow
-1. **Ingest:** Load documents via `PyPDFLoader`.
+1. **Ingest:** Upload documents via the Streamlit UI or place them in `./data/`.
 2. **Chunk:** Split documents using `RecursiveCharacterTextSplitter`.
 3. **Embed:** Convert chunks into vectors using HuggingFace embeddings.
 4. **Store:** Save vectors persistently in ChromaDB (`./vector_db/`).
-5. **Query:** Retrieve relevant context for user queries.
-6. **Generate:** Produce answers using local Llama 3 via Ollama.
+5. **Query:** Retrieve relevant context for user queries using similarity search.
+6. **Generate:** Produce answers using local Llama 3 via Ollama and stream the results to the UI.
 
 ### Key Modules
+- `app.py`: The main Streamlit entry point for the web interface.
 - `PDFProcessor` (`src/processor.py`): Handles document splitting and chunking.
 - `VectorDatabase` (`src/database.py`): Singleton class for managing ChromaDB.
 - `LLMService` (`src/llm_service.py`): Singleton class for Ollama connection, prompt templating, and response generation.
@@ -46,15 +48,14 @@ The project follows a modular Object-Oriented Programming pattern with a singlet
    ```bash
    ollama run llama3
    ```
-5. Place your PDF documents in the `data/` directory.
 
 ## Usage
 
 *Note: The system is currently optimized for local Apple Silicon/CPU hardware and is designed for general academic/technical document domains.*
 
-Run the CLI application to ingest documents and start querying:
+Run the Streamlit application to start the web interface:
 ```bash
-python main.py
+streamlit run app.py
 ```
 
-*(Streamlit UI coming soon!)*
+This will open a browser window where you can upload your PDF documents via the sidebar and start chatting with the assistant!
