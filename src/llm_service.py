@@ -46,5 +46,11 @@ Answer:"""
             print(chunk, end="", flush=True)
             response += chunk
         print()
-
+        
         return response
+        
+    def generate_response_stream(self, query, retrieved_docs):
+        """Generates a streaming response using Ollama and the retrieved context."""
+        context = "\n\n".join([doc.page_content for doc in retrieved_docs])
+        chain = self.prompt | self.llm
+        return chain.stream({"context": context, "question": query})
